@@ -4,16 +4,14 @@
 #include <queue>
 #include <set>
 
-bool has_path_dfs(std::vector<std::vector<int>> &gr, int fr, int to, std::set<int> &gray)
+bool has_path_dfs(const std::vector<std::vector<int>> &gr, int fr, int to, std::set<int> &gray)
 {
 	if (fr == to) return true;
 	gray.insert(fr);
 	for (int j : gr[fr])
 	{
 		if (gray.count(j) != 0) continue;
-		gray.insert(j);
 		if (has_path_dfs(gr, j, to, gray)) return true;
-		gray.erase(j);
 	}
 	return false;
 }
@@ -47,7 +45,7 @@ int main(int argc, char *argv[])
 	{
 		int n, m;
 		*input >> n >> m;
-		std::vector<std::vector<int>> gr;
+		std::vector<std::vector<int>> gr(n);
 		gr.resize(n);
 		for (int i = 0; i < m; ++i)
 		{
