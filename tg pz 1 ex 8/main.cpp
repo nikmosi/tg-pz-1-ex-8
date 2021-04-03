@@ -4,7 +4,7 @@
 #include <queue>
 #include <set>
 
-bool has_path_dfs(const std::vector<std::vector<int>> &gr, int fr, int to, std::set<int> &gray)
+bool has_path_dfs(const std::vector<std::vector<int>> &gr, const int fr, const int to, std::set<int> &gray)
 {
 	if (fr == to) return true;
 	gray.insert(fr);
@@ -18,7 +18,7 @@ bool has_path_dfs(const std::vector<std::vector<int>> &gr, int fr, int to, std::
 
 
 
-bool has_path_bfs(const std::vector<std::vector<int>> &gr, int fr, int to)
+bool has_path_bfs(const std::vector<std::vector<int>> &gr, const int fr, const int to)
 {
 	auto *q = new std::queue<int>();
 	q->push(fr);
@@ -38,22 +38,34 @@ bool has_path_bfs(const std::vector<std::vector<int>> &gr, int fr, int to)
 	return false;
 }
 
-int main(int argc, char *argv[])
+std::vector<std::vector<int>> *input(const char file_name[])
 {
-	auto *input = new std::ifstream("input.txt");
+	auto *input = new std::ifstream(file_name);
 	if (input)
 	{
 		int n, m;
 		*input >> n >> m;
-		std::vector<std::vector<int>> gr(n);
+		std::vector<std::vector<int>> *gr = new std::vector<std::vector<int>>(n);
 		for (int i = 0; i < m; ++i)
 		{
 			int a, b;
 			*input >> a >> b;
-			gr[a].push_back(b);
-			gr[b].push_back(a);
+			gr->at(a).push_back(b);
+			gr->at(b).push_back(a);
 		}
-		std::set<int> bb;
-		std::cout << has_path_dfs(gr, 1, 4, bb) << std::endl;
+		return gr;
 	}
+	return nullptr;
+}
+
+int main()
+{
+	auto *gr = input("input.txt");
+	if (gr)
+	{
+		std::set<int> bb;
+		std::cout << has_path_dfs(*gr, 1, 4, bb) << std::endl;
+	}
+
+	return 0;
 }
