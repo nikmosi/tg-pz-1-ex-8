@@ -46,7 +46,6 @@ int main(int argc, char *argv[])
 		int n, m;
 		*input >> n >> m;
 		std::vector<std::vector<int>> gr(n);
-		gr.resize(n);
 		for (int i = 0; i < m; ++i)
 		{
 			int a, b;
