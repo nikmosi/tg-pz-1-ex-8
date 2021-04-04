@@ -6,6 +6,8 @@
 #include <queue>
 #include <set>
 
+#pragma region function declarations
+
 /// <summary>
 /// checks if there is a way 'from' and 'to' in a 'graph' using Depth-first search
 /// </summary>
@@ -42,11 +44,13 @@ bool has_path_bfs(const std::vector<std::vector<int>> &graph, int from, int to);
 std::vector<std::vector<int>> *input(const char file_name[]);
 
 /// <summary>
-/// Calculates the execution time of a function
+/// calculates the execution time of a 'func'
 /// </summary>
 /// <param name="func"> func or lambda </param>
 /// <returns> returns the execution time 'func' in ms </returns>
 double execute(std::function<void()> func);
+
+#pragma endregion 
 
 int main()
 {
@@ -57,8 +61,11 @@ int main()
    const double time = execute([graph, &r]() { r = has_path_dfs(*graph, 1, 4); });
    std::cout << time << std::endl << r << std::endl;
 
+
    return 0;
 }
+
+#pragma region implementation of functions
 
 bool has_path_dfs(const std::vector<std::vector<int>> &graph, const int from, const int to)
 {
@@ -125,3 +132,5 @@ double execute(const std::function<void()> func)
    const auto end = std::chrono::high_resolution_clock::now();
    return std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1, 1000>>>(end - start).count();
 }
+
+#pragma endregion 
