@@ -112,15 +112,15 @@ std::vector<std::vector<int>> *input(const char file_name[])
    {
       int n, m;
       *input >> n >> m;
-      std::vector<std::vector<int>> *gr = new std::vector<std::vector<int>>(n);
+      std::vector<std::vector<int>> *graph = new std::vector<std::vector<int>>(n);
       for(int i = 0; i < m; ++i)
       {
          int a, b;
          *input >> a >> b;
-         gr->at(a).push_back(b);
-         gr->at(b).push_back(a);
+         graph->at(a).push_back(b);
+         graph->at(b).push_back(a);
       }
-      return gr;
+      return graph;
    }
    return nullptr;
 }
