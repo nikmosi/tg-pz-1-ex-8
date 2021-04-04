@@ -20,6 +20,8 @@ double execute(const std::function<void()> &func);
 
 int main()
 {
+   
+
    execute([]() {});
 
 
