@@ -39,9 +39,9 @@ bool has_path_bfs(const std::vector<std::vector<int>> &graph, int from, int to);
 /// <summary>
 /// loads a graph from 'file_name'
 /// </summary>
-/// <param name="file_name"> path to file or file name </param>
-/// <returns> Graph representation </returns>
-std::vector<std::vector<int>> *input(const char file_name[]);
+/// <param name="input">data stream</param>
+/// <returns></returns>
+std::vector<std::vector<int>> *input(std::istream &input);
 
 /// <summary>
 /// calculates the execution time of a 'func'
@@ -54,12 +54,15 @@ double execute(std::function<void()> func);
 
 int main()
 {
-   auto *graph = input("input.txt");
+   auto s = std::ifstream("input.txt");
+   auto *graph = input(s);
+
    if(graph)
-      std::cout << has_path_dfs(*graph, 1, 4) << std::endl;
-   bool r = 0;
-   const double time = execute([graph, &r]() { r = has_path_dfs(*graph, 1, 4); });
-   std::cout << time << std::endl << r << std::endl;
+   {
+      bool r = 0;
+      const double time = execute([graph, &r]() { r = has_path_dfs(*graph, 1, 4); });
+      std::cout << time << " ms" << std::endl << r ? "route exists" : "route does not exist" << std::endl;
+   }
 
 
    return 0;
@@ -105,18 +108,17 @@ bool has_path_bfs(const std::vector<std::vector<int>> &graph, const int from, co
    return false;
 }
 
-std::vector<std::vector<int>> *input(const char file_name[])
+std::vector<std::vector<int>> *input(std::istream &input)
 {
-   auto *input = new std::ifstream(file_name);
    if(input)
    {
       int n, m;
-      *input >> n >> m;
+      input >> n >> m;
       std::vector<std::vector<int>> *graph = new std::vector<std::vector<int>>(n);
       for(int i = 0; i < m; ++i)
       {
          int a, b;
-         *input >> a >> b;
+         input >> a >> b;
          graph->at(a).push_back(b);
          graph->at(b).push_back(a);
       }
