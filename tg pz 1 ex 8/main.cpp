@@ -61,7 +61,7 @@ int main()
    {
       bool r = 0;
       const double time = execute([graph, &r]() { r = has_path_dfs(*graph, 1, 4); });
-      std::cout << time << " ms" << std::endl << r ? "route exists" : "route does not exist" << std::endl;
+      std::cout << time << " ms" << std::endl << (r ? "route exists" : "route does not exist") << std::endl;
    }
 
 
