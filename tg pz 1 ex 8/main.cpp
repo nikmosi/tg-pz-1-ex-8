@@ -6,19 +6,46 @@
 #include <queue>
 #include <set>
 
-// checks if there is a way 'from' and 'to' in a 'graph' using Depth-first search
+/// <summary>
+/// checks if there is a way 'from' and 'to' in a 'graph' using Depth-first search
+/// </summary>
+/// <param name="graph"> Graph representation </param>
+/// <param name="from"> start point </param>
+/// <param name="to"> end point </param>
+/// <returns> 1 if there is a path, otherwise 0 </returns>
 bool has_path_dfs(const std::vector<std::vector<int>> &graph, int from, int to);
 
-// checks if there is a way 'from' and 'to' in a 'graph' using Depth-first search. Gray is a set of marked points
+/// <summary>
+/// checks if there is a way 'from' and 'to' in a 'graph' using Depth-first search.
+/// </summary>
+/// <param name="graph"> Graph representation </param>
+/// <param name="from"> start point </param>
+/// <param name="to"> end point </param>
+/// <param name="gray"> set of marked points </param>
+/// <returns> 1 if there is a path, otherwise 0 </returns>
 bool has_path_dfs(const std::vector<std::vector<int>> &graph, int from, int to, std::set<int> &gray);
 
-// checks if there is a way 'from' and 'to' in a 'graph' using breadth-first search
+/// <summary>
+/// // checks if there is a way 'from' and 'to' in a 'graph' using breadth-first search
+/// </summary>
+/// <param name="graph"> Graph representation </param>
+/// <param name="from"> start point </param>
+/// <param name="to"> end point </param>
+/// <returns> 1 if there is a path, otherwise 0 </returns>
 bool has_path_bfs(const std::vector<std::vector<int>> &graph, int from, int to);
 
-// loads a graph from 'file_name'
+/// <summary>
+/// loads a graph from 'file_name'
+/// </summary>
+/// <param name="file_name"> path to file or file name </param>
+/// <returns> Graph representation </returns>
 std::vector<std::vector<int>> *input(const char file_name[]);
 
-// returns the execution time 'func' in ms
+/// <summary>
+/// Calculates the execution time of a function
+/// </summary>
+/// <param name="func"> func or lambda </param>
+/// <returns> returns the execution time 'func' in ms </returns>
 double execute(std::function<void()> func);
 
 int main()
@@ -26,7 +53,6 @@ int main()
    auto *graph = input("input.txt");
    if(graph)
       std::cout << has_path_dfs(*graph, 1, 4) << std::endl;
-
    bool r = 0;
    const double time = execute([graph, &r]() { r = has_path_dfs(*graph, 1, 4); });
    std::cout << time << std::endl << r << std::endl;
