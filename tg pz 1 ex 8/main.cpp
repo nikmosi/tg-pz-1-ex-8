@@ -1,8 +1,8 @@
-#include <chrono>
-#include <iostream>
 #include <functional>
-#include <ratio>
+#include <iostream>
+#include <chrono>
 #include <vector>
+#include <ratio>
 
 /// <summary>
 /// loads a graph from 'file_name'
@@ -16,11 +16,11 @@ std::vector<std::vector<int>> *input(std::istream &input);
 /// </summary>
 /// <param name="func"> func or lambda </param>
 /// <returns> returns the execution time 'func' in ms </returns>
-double execute(std::function<void()> func);
+double execute(const std::function<void()> &func);
 
 int main()
 {
-   
+   execute([]() {});
 
 
    return 0;
@@ -45,7 +45,7 @@ std::vector<std::vector<int>> *input(std::istream &input)
    return nullptr;
 }
 
-double execute(const std::function<void()> func)
+double execute(const std::function<void()> &func)
 {
    const auto start = std::chrono::high_resolution_clock::now();
    func();
