@@ -6,19 +6,21 @@
 #include <queue>
 #include <set>
 
+namespace path
+{
 
 #pragma region function declarations
 
-/// <summary>
+   /// <summary>
 /// checks if there is a way 'from' and 'to' in a 'graph' using Depth-first search
 /// </summary>
 /// <param name="graph"> Graph representation </param>
 /// <param name="from"> start point </param>
 /// <param name="to"> end point </param>
 /// <returns> 1 if there is a path, otherwise 0 </returns>
-bool has_path_dfs(const std::vector<std::vector<int>> &graph, int from, int to);
+   bool has_path_dfs(const std::vector<std::vector<int>> &graph, int from, int to);
 
-/// <summary>
+   /// <summary>
 /// checks if there is a way 'from' and 'to' in a 'graph' using Depth-first search.
 /// </summary>
 /// <param name="graph"> Graph representation </param>
@@ -26,98 +28,100 @@ bool has_path_dfs(const std::vector<std::vector<int>> &graph, int from, int to);
 /// <param name="to"> end point </param>
 /// <param name="gray"> set of marked points </param>
 /// <returns> 1 if there is a path, otherwise 0 </returns>
-bool has_path_dfs(const std::vector<std::vector<int>> &graph, int from, int to, std::set<int> &gray);
+   bool has_path_dfs(const std::vector<std::vector<int>> &graph, int from, int to, std::set<int> &gray);
 
-/// <summary>
+   /// <summary>
 /// // checks if there is a way 'from' and 'to' in a 'graph' using breadth-first search
 /// </summary>
 /// <param name="graph"> Graph representation </param>
 /// <param name="from"> start point </param>
 /// <param name="to"> end point </param>
 /// <returns> 1 if there is a path, otherwise 0 </returns>
-bool has_path_bfs(const std::vector<std::vector<int>> &graph, int from, int to);
+   bool has_path_bfs(const std::vector<std::vector<int>> &graph, int from, int to);
 
-/// <summary>
+   /// <summary>
 /// loads a graph from 'file_name'
 /// </summary>
 /// <param name="input">data stream</param>
 /// <returns></returns>
-std::vector<std::vector<int>> *input(std::istream &input);
+   std::vector<std::vector<int>> *input(std::istream &input);
 
-/// <summary>
+   /// <summary>
 /// calculates the execution time of a 'func'
 /// </summary>
 /// <param name="func"> func or lambda </param>
 /// <returns> returns the execution time 'func' in ms </returns>
-double execute(std::function<void()> func);
+   double execute(std::function<void()> func);
 
 #pragma endregion
 
 #pragma region implementation of functions
 
-bool has_path_dfs(const std::vector<std::vector<int>> &graph, const int from, const int to)
-{
-   std::set<int> t;
-   return has_path_dfs(graph, from, to, t);
-}
-
-bool has_path_dfs(const std::vector<std::vector<int>> &graph, const int from, const int to, std::set<int> &gray)
-{
-   if (from == to) return true;
-   gray.insert(from);
-   for (int j : graph[from])
+   bool has_path_dfs(const std::vector<std::vector<int>> &graph, const int from, const int to)
    {
-      if (gray.count(j) != 0) continue;
-      if (has_path_dfs(graph, j, to, gray)) return true;
+      std::set<int> t;
+      return has_path_dfs(graph, from, to, t);
    }
-   return false;
-}
 
-bool has_path_bfs(const std::vector<std::vector<int>> &graph, const int from, const int to)
-{
-   auto *q = new std::queue<int>();
-   q->push(from);
-   auto *gray = new std::set<int>();
-   while (!q->empty())
+   bool has_path_dfs(const std::vector<std::vector<int>> &graph, const int from, const int to, std::set<int> &gray)
    {
-      int v = q->front();
-      q->pop();
-      gray->insert(v);
-      for (int j : graph[v])
+      if (from == to) return true;
+      gray.insert(from);
+      for (int j : graph[from])
       {
-         if (gray->count(j) == 0) q->push(j);
-         if (j == to) return true;
+         if (gray.count(j) != 0) continue;
+         if (has_path_dfs(graph, j, to, gray)) return true;
       }
+      return false;
    }
 
-   return false;
-}
-
-std::vector<std::vector<int>> *input(std::istream &input)
-{
-   if (input)
+   bool has_path_bfs(const std::vector<std::vector<int>> &graph, const int from, const int to)
    {
-      int n, m;
-      input >> n >> m;
-      std::vector<std::vector<int>> *graph = new std::vector<std::vector<int>>(n);
-      for (int i = 0; i < m; ++i)
+      auto *q = new std::queue<int>();
+      q->push(from);
+      auto *gray = new std::set<int>();
+      while (!q->empty())
       {
-         int a, b;
-         input >> a >> b;
-         graph->at(a).push_back(b);
-         graph->at(b).push_back(a);
+         int v = q->front();
+         q->pop();
+         gray->insert(v);
+         for (int j : graph[v])
+         {
+            if (gray->count(j) == 0) q->push(j);
+            if (j == to) return true;
+         }
       }
-      return graph;
+
+      return false;
    }
-   return nullptr;
-}
 
-double execute(const std::function<void()> func)
-{
-   const auto start = std::chrono::high_resolution_clock::now();
-   func();
-   const auto end = std::chrono::high_resolution_clock::now();
-   return std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1, 1000>>>(end - start).count();
-}
+   std::vector<std::vector<int>> *input(std::istream &input)
+   {
+      if (input)
+      {
+         int n, m;
+         input >> n >> m;
+         std::vector<std::vector<int>> *graph = new std::vector<std::vector<int>>(n);
+         for (int i = 0; i < m; ++i)
+         {
+            int a, b;
+            input >> a >> b;
+            graph->at(a).push_back(b);
+            graph->at(b).push_back(a);
+         }
+         return graph;
+      }
+      return nullptr;
+   }
 
-#pragma endregion 
+   double execute(const std::function<void()> func)
+   {
+      const auto start = std::chrono::high_resolution_clock::now();
+      func();
+      const auto end = std::chrono::high_resolution_clock::now();
+      return std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1, 1000>>>(end - start).count();
+   }
+
+#pragma endregion
+
+}
