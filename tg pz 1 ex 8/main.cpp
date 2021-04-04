@@ -4,9 +4,6 @@
 #include <ratio>
 #include <vector>
 
-
-
-
 /// <summary>
 /// loads a graph from 'file_name'
 /// </summary>
