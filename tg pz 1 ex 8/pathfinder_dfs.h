@@ -22,7 +22,7 @@ namespace path
    /// <param name="to"> end point </param>
    /// <param name="gray"> set of marked points </param>
    /// <returns> 1 if there is a path, otherwise 0 </returns>
-   bool has_path_dfs(const std::vector<std::vector<int>> &graph, int from, int to, std::set<int> &gray);
+   bool dfs(const std::vector<std::vector<int>> &graph, int from, int to, std::set<int> &gray);
 }
 
 
