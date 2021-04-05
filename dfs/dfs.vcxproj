@@ -21,11 +21,6 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\useful functions\useful functions.vcxproj">
-      <Project>{49464f65-55d4-447c-9496-e9cb2a09fbe4}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
