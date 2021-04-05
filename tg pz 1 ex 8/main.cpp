@@ -97,10 +97,10 @@ std::vector<std::vector<int>> *input(std::istream &input)
 {
    if(input)
    {
-      int n;
-      input >> n;
+      int n, m;
+      input >> n, m;
       std::vector<std::vector<int>> *graph = new std::vector<std::vector<int>>(n);
-      while(!input.eof())
+      for(int i = 0; i < m; ++i)
       {
          int a, b;
          input >> a >> b;
