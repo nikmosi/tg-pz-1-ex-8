@@ -139,11 +139,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\tg pz 1 ex 8\pathfinder_bfs.h" />
+    <ClCompile Include="pathfinder_bfs.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\tg pz 1 ex 8\pathfinder_bfs.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClInclude Include="pathfinder_bfs.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
