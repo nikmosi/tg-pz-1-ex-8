@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{448e8457-3f7d-4b97-9649-18c3df2ec8a9}</ProjectGuid>
-    <RootNamespace>tgpz1ex8</RootNamespace>
+    <ProjectGuid>{b64a98e3-2e01-409e-a21c-be196e00cbfe}</ProjectGuid>
+    <RootNamespace>bfs</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -139,10 +139,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClInclude Include="..\tg pz 1 ex 8\pathfinder_bfs.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="input.txt" />
+    <ClCompile Include="..\tg pz 1 ex 8\pathfinder_bfs.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
