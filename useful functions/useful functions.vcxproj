@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{448e8457-3f7d-4b97-9649-18c3df2ec8a9}</ProjectGuid>
-    <RootNamespace>tgpz1ex8</RootNamespace>
+    <ProjectGuid>{49464f65-55d4-447c-9496-e9cb2a09fbe4}</ProjectGuid>
+    <RootNamespace>usefulfunctions</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -139,10 +139,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClInclude Include="execute.h" />
+    <ClInclude Include="input.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="input.txt" />
+    <ClCompile Include="execute.cpp" />
+    <ClCompile Include="input.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
