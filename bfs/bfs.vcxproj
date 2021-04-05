@@ -139,10 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="pathfinder_bfs.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="pathfinder_bfs.h" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\useful functions\useful functions.vcxproj">
