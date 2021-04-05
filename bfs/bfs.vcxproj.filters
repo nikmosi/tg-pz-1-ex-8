@@ -23,5 +23,8 @@
     <ClCompile Include="..\tg pz 1 ex 8\pathfinder_bfs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
