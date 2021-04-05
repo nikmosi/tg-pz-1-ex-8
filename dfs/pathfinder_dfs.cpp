@@ -12,8 +12,8 @@ namespace path
 
    bool dfs(const std::vector<std::vector<int>> &graph, const int from, const int to, std::set<int> &gray)
    {
-      if (from == to) return true;
       gray.insert(from);
+      if (from == to) return true;
       for (int j : graph[from])
       {
          if (gray.count(j) != 0) continue;
