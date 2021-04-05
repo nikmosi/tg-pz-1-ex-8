@@ -19,10 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="pathfinder_dfs.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="pathfinder_dfs.h" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\useful functions\useful functions.vcxproj">
