@@ -4,7 +4,7 @@ std::vector<std::vector<int>> *input(std::istream &input)
 {
    if (input)
    {
-      int n, m = 0;
+      int n, m;
       input >> n >> m;
       std::vector<std::vector<int>> *graph = new std::vector<std::vector<int>>(n);
       for (int i = 0; i < m; ++i)
