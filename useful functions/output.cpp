@@ -3,7 +3,7 @@
 
 void output(std::ostream &output, const std::vector<std::vector<int>> &graph)
 {
-   const auto n = graph->size();
+   const auto n = graph.size();
    auto m = 0;
 
    for(const auto &i : graph)
@@ -13,7 +13,7 @@ void output(std::ostream &output, const std::vector<std::vector<int>> &graph)
 
    for(size_t i = 0; i < n; ++i)
    {
-      const auto &e = graph->at(i);
+      const auto &e = graph.at(i);
       const auto s = e.size();
       for(size_t j = 0; j < s; ++j)
          output << i << e.at(j) << std::endl;
