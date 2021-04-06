@@ -1,7 +1,7 @@
 
 #include "output.h"
 
-void output(std::ostream &output, const std::vector<std::vector<int>> *&graph)
+void output(std::ostream &output, const std::vector<std::vector<int>> &graph)
 {
    const auto n = graph->size();
    auto m = 0;
