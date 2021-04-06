@@ -2,6 +2,8 @@
 #include <queue>
 #include <set>
 #include <istream>
+#include <sstream>
+#include <fstream>
 
 /// <summary>
 /// // checks if there is a way 'from' and 'to' in a 'graph' using breadth-first search
@@ -22,12 +24,15 @@ std::vector<std::vector<int>> *input(std::istream &input);
 /// <summary>
 /// creates a graph view in an output stream
 /// </summary>
-/// <param name="output"></param>
+/// <param name="stream"></param>
 /// <param name="graph"> graph representation </param>
-void output(std::ostream &output, std::vector<std::vector<int>> &graph);
+void output(std::ostream &stream, std::vector<std::vector<int>> &graph);
 
 int main(int argc, char *argv[])
 {
+   auto *ss = new std::stringstream("3 3\n0 1\n0 2\n1 2\n");
+   auto *os = new std::ofstream("output.txt");
+   output(*os, *input(*ss));
 }
 
 bool has_path_bfs(const std::vector<std::vector<int>> &graph, const int from, const int to)
@@ -69,21 +74,21 @@ std::vector<std::vector<int>> *input(std::istream &input)
    return nullptr;
 }
 
-void output(std::ostream &output, const std::vector<std::vector<int>> *&graph)
+void output(std::ostream &stream, std::vector<std::vector<int>> &graph)
 {
-   const auto n = graph->size();
+   const auto n = graph.size();
    auto m = 0;
 
    for (const auto &i : graph)
       m += i.size();
    m /= 2;
-   output << n << " " << m << std::endl;
+   stream << n << " " << m << std::endl;
 
    for (size_t i = 0; i < n; ++i)
    {
-      const auto &e = graph->at(i);
+      const auto &e = graph.at(i);
       const auto s = e.size();
       for (size_t j = 0; j < s; ++j)
-         output << i << e.at(j) << std::endl;
+         stream << i << " " << e.at(j) << std::endl;
    }
 }
