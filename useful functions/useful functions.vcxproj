@@ -143,11 +143,6 @@
     <ClInclude Include="input.h" />
     <ClInclude Include="output.h" />
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="execute.cpp" />
-    <ClCompile Include="input.cpp" />
-    <ClCompile Include="output.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
