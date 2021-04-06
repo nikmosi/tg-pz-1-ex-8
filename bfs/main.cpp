@@ -5,6 +5,9 @@
 #include <sstream>
 #include <fstream>
 
+#include "input.h"
+#include "output.h"
+
 /// <summary>
 /// // checks if there is a way 'from' and 'to' in a 'graph' using breadth-first search
 /// </summary>
@@ -14,25 +17,11 @@
 /// <returns> 1 if there is a path, otherwise 0 </returns>
 bool has_path_bfs(const std::vector<std::vector<int>> &graph, int from, int to);
 
-/// <summary>
-/// creates a graph view from an input stream
-/// </summary>
-/// <param name="input"></param>
-/// <returns> graph representation </returns>
-std::vector<std::vector<int>> *input(std::istream &input);
-
-/// <summary>
-/// creates a graph view in an output stream
-/// </summary>
-/// <param name="stream"></param>
-/// <param name="graph"> graph representation </param>
-void output(std::ostream &stream, std::vector<std::vector<int>> &graph);
-
 int main(int argc, char *argv[])
 {
    auto *ss = new std::stringstream("3 3\n0 1\n0 2\n1 2\n");
    auto *os = new std::ofstream("output.txt");
-   output(*os, *input(*ss));
+   useful_func::output(*os, *useful_func::input(*ss));
 }
 
 bool has_path_bfs(const std::vector<std::vector<int>> &graph, const int from, const int to)
@@ -53,42 +42,4 @@ bool has_path_bfs(const std::vector<std::vector<int>> &graph, const int from, co
    }
 
    return false;
-}
-
-std::vector<std::vector<int>> *input(std::istream &input)
-{
-   if (input)
-   {
-      int n, m;
-      input >> n >> m;
-      std::vector<std::vector<int>> *graph = new std::vector<std::vector<int>>(n);
-      for (int i = 0; i < m; ++i)
-      {
-         int a, b;
-         input >> a >> b;
-         graph->at(a).push_back(b);
-         graph->at(b).push_back(a);
-      }
-      return graph;
-   }
-   return nullptr;
-}
-
-void output(std::ostream &stream, std::vector<std::vector<int>> &graph)
-{
-   const auto n = graph.size();
-   auto m = 0;
-
-   for (const auto &i : graph)
-      m += i.size();
-   m /= 2;
-   stream << n << " " << m << std::endl;
-
-   for (size_t i = 0; i < n; ++i)
-   {
-      const auto &e = graph.at(i);
-      const auto s = e.size();
-      for (size_t j = 0; j < s; ++j)
-         stream << i << " " << e.at(j) << std::endl;
-   }
 }
