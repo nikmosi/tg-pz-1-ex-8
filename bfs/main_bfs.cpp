@@ -5,8 +5,8 @@
 #include <sstream>
 #include <fstream>
 
-#include "input.h"
-#include "output.h"
+#include "../useful functions/output.h"
+#include "../useful functions/input.h"
 
 /// <summary>
 /// // checks if there is a way 'from' and 'to' in a 'graph' using breadth-first search

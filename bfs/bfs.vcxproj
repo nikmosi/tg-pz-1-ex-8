@@ -142,6 +142,11 @@
   <ItemGroup>
     <ClCompile Include="main_bfs.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\useful functions\useful functions.vcxproj">
+      <Project>{b3a3f58c-3bfe-4f9b-b882-6edd476f7eb0}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
