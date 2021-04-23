@@ -22,14 +22,9 @@ bool has_path_bfs(const std::vector<std::vector<int>> &graph, int from, int to);
 
 int main(int argc, char *argv[])
 {
-   auto *ss = new std::stringstream("3 3\n0 1\n0 2\n1 2\n");
-   auto *os = new std::ofstream("output.txt");
-   auto gr = useful_func::input(std::cin);
-   const auto t = useful_func::execute([&gr]()
-   {
-           has_path_bfs(*gr, 0, 1);
-   });
-   std::cout << t << std::endl;
+    auto* ss = new std::stringstream("3 3\n0 1\n0 2\n1 2\n");
+    auto* os = new std::ofstream("output.txt");
+    useful_func::output(*os, *useful_func::input(*ss));
 }
 
 bool has_path_bfs(const std::vector<std::vector<int>> &graph, const int from, const int to)
