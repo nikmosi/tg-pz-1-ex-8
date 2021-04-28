@@ -16,15 +16,15 @@ namespace useful_func
       {
          int n, m;
          input >> n >> m;
-         std::vector<std::vector<int>> *graph = new std::vector<std::vector<int>>(n);
+         std::vector<std::vector<int>> graph(n);
          for (int i = 0; i < m; ++i)
          {
             int a, b;
             input >> a >> b;
-            graph->at(a).push_back(b);
-            graph->at(b).push_back(a);
+            graph.at(a).push_back(b);
+            graph.at(b).push_back(a);
          }
-         return graph;
+         return &graph;
       }
       return nullptr;
    }
