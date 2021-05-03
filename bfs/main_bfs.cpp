@@ -1,48 +1,92 @@
+#include <chrono>
+#include <functional>
 #include <vector>
 #include <queue>
+#include <ratio>
 #include <set>
-#include <istream>
-#include <sstream>
-#include <fstream>
-#include <iostream>
 
+double execute(const std::function<void()>& func);
 
-#include "../useful functions/output.h"
-#include "../useful functions/input.h"
-#include "../useful functions/execute.h"
+std::vector<std::vector<int>>* input(std::istream& input);
 
-/// <summary>
-/// // checks if there is a way 'from' and 'to' in a 'graph' using breadth-first search
-/// </summary>
-/// <param name="graph"> Graph representation </param>
-/// <param name="from"> start point </param>
-/// <param name="to"> end point </param>
-/// <returns> 1 if there is a path, otherwise 0 </returns>
+void output(std::ostream& output, std::vector<std::vector<int>>& graph);
+
 bool has_path_bfs(const std::vector<std::vector<int>> &graph, int from, int to);
 
 int main(int argc, char *argv[])
 {
-    auto* ss = new std::stringstream("3 3\n0 1\n0 2\n1 2\n");
-    auto* os = new std::ofstream("output.txt");
-    useful_func::output(*os, *useful_func::input(*ss));
+   
 }
 
 bool has_path_bfs(const std::vector<std::vector<int>> &graph, const int from, const int to)
 {
    std::queue<int> q;
    q.push(from);
-   auto *gray = new std::set<int>();
+   std::set<int> gray;
    while(!q.empty())
    {
       int v = q.front();
       q.pop();
-      gray->insert(v);
+      gray.insert(v);
       for(int j : graph[v])
       {
-         if(gray->count(j) == 0) q.push(j);
-         if(j == to) return true;
+         if (j == to) return true;
+         if(gray.count(j) == 0)
+         {
+            q.push(j);
+            gray.insert(j);
+         }
       }
    }
 
    return false;
+}
+
+double execute(const std::function<void()>& func)
+{
+   const auto start = std::chrono::high_resolution_clock::now();
+   func();
+   const auto end = std::chrono::high_resolution_clock::now();
+   return std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1, 1000>>>(end - start).count();
+}
+
+std::vector<std::vector<int>>* input(std::istream& input)
+{
+   if (input)
+   {
+      int n, m;
+      input >> n >> m;
+      auto* graph = new std::vector<std::vector<int>>(n);
+      for (int i = 0; i < m; ++i)
+      {
+         int a, b;
+         input >> a >> b;
+         graph->at(a).push_back(b);
+         graph->at(b).push_back(a);
+      }
+      return graph;
+   }
+   return nullptr;
+}
+
+void output(std::ostream& output, std::vector<std::vector<int>>& graph)
+{
+   const auto n = graph.size();
+   auto m = 0;
+
+   for (const auto& i : graph)
+      m += i.size();
+   m /= 2;
+   output << n << " " << m << std::endl;
+
+   std::set<int> marked;
+   for (size_t i = 0; i < n; ++i)
+   {
+      marked.insert(i);
+      const auto& e = graph.at(i);
+      const auto s = e.size();
+      for (size_t j = 0; j < s; ++j)
+         if (marked.count(e.at(j)) == 0)
+            output << i << " " << e.at(j) << std::endl;
+   }
 }
