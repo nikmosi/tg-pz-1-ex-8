@@ -23,21 +23,22 @@ void actual_complexity(int size);
 
 int main(int argc, char *argv[])
 {
-   actual_complexity(1000);
+   actual_complexity(10000);
 
    return 0;
 }
 
 bool has_path_bfs(const std::vector<std::vector<int>> &graph, const int from, const int to)
 {
+   if(from == to) return true;
    std::queue<int> q;
    q.push(from);
    std::set<int> gray;
+   gray.insert(from);
    while(!q.empty())
    {
-      int v = q.front();
+      const int v = q.front();
       q.pop();
-      gray.insert(v);
       for(int j : graph[v])
       {
          if(j == to) return true;
