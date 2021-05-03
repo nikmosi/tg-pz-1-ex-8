@@ -13,23 +13,12 @@ std::vector<std::vector<int>> *get_full_graph(const int size);
 
 void move_an_edge(std::vector<std::vector<int>> &from, std::vector<std::vector<int>> &to);
 
+void theoretical_complexity(int size);
+void actual_complexity(int size);
+
 int main(int argc, char *argv[])
 {
-   std::srand(static_cast<unsigned>(time(nullptr) / 2));
-
-   const int size = 1000;
-   std::vector<std::vector<int>> full_graph = *get_full_graph(size);
-   std::vector<std::vector<int>> gr(size);
-
-   const int c_edge = size * (size - 1) / 2;
-   for(int i = 0; i < c_edge; ++i)
-   {
-      move_an_edge(full_graph, gr);
-
-      if((i + 1) % 100) continue;
-      const auto time = execute([&gr, &size]() { has_path_dfs(gr, 1, size); });
-      printf_s("%d;%lf;\n", i + 1, time);
-   }
+   actual_complexity(1000);
 
    return 0;
 }
@@ -95,4 +84,41 @@ void move_an_edge(std::vector<std::vector<int>> &from, std::vector<std::vector<i
    const auto it = std::find(t.begin(), t.end(), from_vertex);
    if(it != t.end())
       t.erase(it);
+}
+
+void theoretical_complexity(const int size)
+{
+   std::srand(static_cast<unsigned>(time(nullptr) / 2));
+
+   std::vector<std::vector<int>> full_graph = *get_full_graph(size);
+   std::vector<std::vector<int>> gr(size);
+
+   const int c_edge = size * (size - 1) / 2;
+   for (int i = 0; i < c_edge; ++i)
+   {
+      move_an_edge(full_graph, gr);
+
+      if ((i + 1) % 100) continue;
+      const auto time = execute([&gr, &size]() { has_path_dfs(gr, 1, size); });
+      printf_s("%d;%lf;\n", i + 1, time);
+   }
+}
+
+void actual_complexity(const int size)
+{
+   std::srand(static_cast<unsigned>(time(nullptr) / 2));
+
+   std::vector<std::vector<int>> full_graph = *get_full_graph(size);
+   std::vector<std::vector<int>> gr(size);
+
+   const int c_edge = size * (size - 1) / 2;
+   for (int i = 0; i < c_edge; ++i)
+   {
+      move_an_edge(full_graph, gr);
+
+      if ((i + 1) % 100) continue;
+      int from = rand() % size, to = rand() % size;
+      const auto time = execute([&gr, &from, &to]() { has_path_dfs(gr, from, to); });
+      printf_s("%d;%lf;\n", i + 1, time);
+   }
 }
