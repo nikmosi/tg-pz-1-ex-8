@@ -22,10 +22,6 @@ int main(int argc, char *argv[])
    std::vector<std::vector<int>> full_graph = *get_full_graph(size);
    std::vector<std::vector<int>> gr(size);
 
-   std::vector<int> v{1};
-   for(int i = 0; i < sqrt(size); ++i)
-      v.push_back(v[i] * 2);
-
    const int c_edge = size * (size - 1) / 2;
    for(int i = 0; i < c_edge; ++i)
    {

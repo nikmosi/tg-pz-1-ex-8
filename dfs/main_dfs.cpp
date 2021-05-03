@@ -1,11 +1,9 @@
-#include <chrono>
 #include <functional>
 #include <iostream>
 #include <vector>
-#include <set>
+#include <chrono>
 #include <stack>
-#include <cmath>
-#include <fstream>
+#include <set>
 
 bool has_path_dfs(const std::vector<std::vector<int>> &graph, int from, int to);
 
@@ -22,10 +20,6 @@ int main(int argc, char *argv[])
    const int size = 1000;
    std::vector<std::vector<int>> full_graph = *get_full_graph(size);
    std::vector<std::vector<int>> gr(size);
-
-   std::vector<int> v{1};
-   for(int i = 0; i < sqrt(size); ++i)
-      v.push_back(v[i] * 2);
 
    const int c_edge = size * (size - 1) / 2;
    for(int i = 0; i < c_edge; ++i)
