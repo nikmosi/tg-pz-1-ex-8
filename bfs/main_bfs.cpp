@@ -10,6 +10,10 @@ bool has_path_bfs(const std::vector<std::vector<int>> &graph, int from, int to);
 
 double execute(const std::function<void()> &func);
 
+std::vector<std::vector<int>> *input(std::istream &input);
+
+void output(std::ostream &output, std::vector<std::vector<int>> &graph);
+
 std::vector<std::vector<int>> *get_full_graph(const int size);
 
 void move_an_edge(std::vector<std::vector<int>> &from, std::vector<std::vector<int>> &to);
@@ -52,6 +56,47 @@ double execute(const std::function<void()> &func)
    func();
    const auto end = std::chrono::high_resolution_clock::now();
    return std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1, 1000>>>(end - start).count();
+}
+
+std::vector<std::vector<int>> *input(std::istream &input)
+{
+   if (input)
+   {
+      int n, m;
+      input >> n >> m;
+      std::vector<std::vector<int>> *graph = new std::vector<std::vector<int>>(n);
+      for (int i = 0; i < m; ++i)
+      {
+         int a, b;
+         input >> a >> b;
+         graph->at(a).push_back(b);
+         graph->at(b).push_back(a);
+      }
+      return graph;
+   }
+   return nullptr;
+}
+
+void output(std::ostream &output, std::vector<std::vector<int>> &graph)
+{
+   const auto n = graph.size();
+   auto m = 0;
+
+   for (const auto &i : graph)
+      m += i.size();
+   m /= 2;
+   output << n << " " << m << std::endl;
+
+   std::set<int> marked;
+   for (size_t i = 0; i < n; ++i)
+   {
+      marked.insert(i);
+      const auto &e = graph.at(i);
+      const auto s = e.size();
+      for (size_t j = 0; j < s; ++j)
+         if (marked.count(e.at(j)) == 0)
+            output << i << " " << e.at(j) << std::endl;
+   }
 }
 
 std::vector<std::vector<int>> *get_full_graph(const int size)
