@@ -22,16 +22,16 @@ int main(int argc, char *argv[])
    std::vector<std::vector<int>> full_graph = *get_full_graph(size);
    std::vector<std::vector<int>> gr(size);
 
-   std::vector<int> v{ 1 };
-   for (int i = 0; i < sqrt(size); ++i)
+   std::vector<int> v{1};
+   for(int i = 0; i < sqrt(size); ++i)
       v.push_back(v[i] * 2);
 
    const int c_edge = size * (size - 1) / 2;
-   for (int i = 0; i < c_edge; ++i)
+   for(int i = 0; i < c_edge; ++i)
    {
       move_an_edge(full_graph, gr);
 
-      if ((i + 1) % 100) continue;
+      if((i + 1) % 100) continue;
       const auto time = execute([&gr, &size]() { has_path_bfs(gr, 1, size); });
       printf_s("%d;%lf;\n", i + 1, time);
    }
@@ -51,12 +51,10 @@ bool has_path_bfs(const std::vector<std::vector<int>> &graph, const int from, co
       gray.insert(v);
       for(int j : graph[v])
       {
-         if (j == to) return true;
-         if(gray.count(j) == 0)
-         {
-            q.push(j);
-            gray.insert(j);
-         }
+         if(j == to) return true;
+         if(gray.count(j) != 0) continue;
+         q.push(j);
+         gray.insert(j);
       }
    }
 
@@ -74,7 +72,7 @@ double execute(const std::function<void()> &func)
 std::vector<std::vector<int>> *get_full_graph(const int size)
 {
    std::vector<int> v(size);
-   for (int i = 0; i < size; ++i) v[i] = i;
+   for(int i = 0; i < size; ++i) v[i] = i;
    auto *graphs = new std::vector<std::vector<int>>(size, v);
    return graphs;
 }
@@ -82,9 +80,9 @@ std::vector<std::vector<int>> *get_full_graph(const int size)
 void move_an_edge(std::vector<std::vector<int>> &from, std::vector<std::vector<int>> &to)
 {
    size_t from_vertex = rand() % from.size();
-   for (size_t i = 0; from[from_vertex].empty(); ++i)
+   for(size_t i = 0; from[from_vertex].empty(); ++i)
    {
-      if (i > from.size())
+      if(i > from.size())
          return;
       ++from_vertex;
       from_vertex %= from.size();
@@ -92,12 +90,12 @@ void move_an_edge(std::vector<std::vector<int>> &from, std::vector<std::vector<i
    auto &fr = from[from_vertex];
    const size_t to_vertex = rand() % fr.size();
 
-   if (to.size() > from_vertex)
+   if(to.size() > from_vertex)
       to[from_vertex].push_back(fr[to_vertex]);
    fr.erase(fr.begin() + to_vertex);
 
    auto t = from[to_vertex];
    const auto it = std::find(t.begin(), t.end(), from_vertex);
-   if (it != t.end())
+   if(it != t.end())
       t.erase(it);
 }
