@@ -20,12 +20,12 @@ vector<vector<int>> *get_full_graph(const int size);
 
 void move_an_edge(vector<vector<int>> &from, vector<vector<int>> &to);
 
-void theoretical_complexity(int size);
-void actual_complexity(int size);
+void theoretical_complexity(int size, ostream &out);
+void actual_complexity(int size, ostream &out);
 
 int main(int argc, char *argv[])
 {
-   actual_complexity(10000);
+   actual_complexity(10000, cout);
 
    return 0;
 }
@@ -35,7 +35,7 @@ bool has_path_bfs(const vector<vector<int>> &graph, const int from, const int to
    if(from == to) return true;
    queue<int> q;
    q.push(from);
-   bool gray[graph.size()];
+   bool *gray = new bool[static_cast<int>(graph.size())];
    gray[from] = true;
    while(!q.empty())
    {
@@ -83,14 +83,14 @@ vector<vector<int>> *input(istream &in)
 void output(ostream &output, vector<vector<int>> &graph)
 {
    const auto n = graph.size();
-   auto m = 0;
+   size_t m = 0;
 
    for (const auto &i : graph)
       m += i.size();
    m /= 2;
    output << n << " " << m << endl;
 
-   set<int> marked;
+   set<size_t> marked;
    for (size_t i = 0; i < n; ++i)
    {
       marked.insert(i);

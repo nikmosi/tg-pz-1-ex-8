@@ -19,12 +19,12 @@ vector<vector<int>> *get_full_graph(int size);
 
 void move_an_edge(vector<vector<int>> &from, vector<vector<int>> &to);
 
-void theoretical_complexity(int size);
-void actual_complexity(int size);
+void theoretical_complexity(int size, ostream &out);
+void actual_complexity(int size, ostream &out);
 
 int main(int argc, char *argv[])
 {
-   actual_complexity(1000);
+   actual_complexity(1000, cout);
 
    return 0;
 }
@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 bool has_path_dfs(const vector<vector<int>> &graph, const int from, const int to)
 {
    if(from == to) return true;
-   bool marked[static_cast<int>(graph.size())];
+   bool *marked = new bool[static_cast<int>(graph.size())];
    marked[from] = true;
    stack<int> p;
    p.push(from);
