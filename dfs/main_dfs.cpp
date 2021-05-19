@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 bool has_path_dfs(const vector<vector<int>> &graph, const int from, const int to)
 {
    if(from == to) return true;
-   bool marked[graph.size()];
+   bool marked[static_cast<int>(graph.size())];
    marked[from] = true;
    stack<int> p;
    p.push(from);
