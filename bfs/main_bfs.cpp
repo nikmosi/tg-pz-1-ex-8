@@ -1,31 +1,63 @@
 #include <functional>
 #include <iostream>
 #include <vector>
+#include <fstream>
 #include <chrono>
 #include <queue>
-#include <ratio>
 #include <set>
 
 using namespace std;
 
-bool has_path_bfs(const vector<vector<int>> &graph, int from, int to);
+bool has_path_dfs(const vector<vector<size_t>> &graph, size_t from, size_t to);
 
 double execute(const function<void()> &func);
 
-vector<vector<int>> *input(istream &in);
+vector<vector<size_t>> *input(istream &in);
 
-void output(ostream &output, vector<vector<int>> &graph);
+void add_edge(vector<vector<size_t>> &graph);
 
-vector<vector<int>> *get_full_graph(const int size);
+void add_vertex(vector<vector<size_t>> &graph);
 
-void move_an_edge(vector<vector<int>> &from, vector<vector<int>> &to);
+void output(ostream &output, vector<vector<size_t>> &graph);
 
-void theoretical_complexity(int size, ostream &out);
-void actual_complexity(int size, ostream &out);
+void complexity(vector<vector<size_t>> &graph, size_t from, size_t to, ostream &out);
 
-int main(int argc, char *argv[])
+void complexity(vector<vector<size_t>> &graph, size_t c_repeat, const function<void(vector<vector<size_t>> &)> &preaction,
+   const function<bool(size_t, size_t)> &predicate, const function<size_t()> &get_from,
+   const function<size_t()> &get_to, ostream &out);
+
+int main()
 {
-   actual_complexity(10000, cout);
+   srand(static_cast<unsigned>(time(nullptr) / 2));
+
+   const size_t size = 500;
+   vector<vector<size_t>> graph(size);
+
+   const size_t c_edge = size * (size - 1) / 2;
+   size_t freq = c_edge / 100;
+   freq = freq ? freq : 1;
+
+   ofstream out("test_actual_edge.txt");
+   complexity(graph, c_edge, add_edge, [&freq](size_t /*a*/, const size_t b) { return b % freq == 0; },
+      [&size]() { return rand() % size; }, [&size]() { return rand() % size; }, cout);
+   out.close();
+
+   for (auto &i : graph)
+      i.clear();
+   ofstream theoretical_edge("test_theoretical_edge.txt");
+   complexity(graph, c_edge, add_edge, [&freq](size_t /*a*/, const size_t b) { return b % freq == 0; },
+      [&size]() { return rand() % size; }, [&size]() { return size; }, theoretical_edge);
+   theoretical_edge.close();
+
+   ofstream actual_vertex("test_actual_vertex.txt");
+   complexity(graph, size * 5, add_vertex, [&freq](size_t /*a*/, const size_t b) { return b % freq == 0; },
+      [&size]() { return rand() % size; }, [&size]() { return rand() % size; }, actual_vertex);
+   actual_vertex.close();
+
+   ofstream theoretical_vertex("test_theoretical_vertex.txt");
+   complexity(graph, size * 5, add_vertex, [&freq](size_t /*a*/, const size_t b) { return b % freq == 0; },
+      [&size]() { return rand() % size; }, [&size]() { return size; }, theoretical_vertex);
+   theoretical_vertex.close();
 
    return 0;
 }
@@ -61,34 +93,30 @@ double execute(const function<void()> &func)
    return chrono::duration_cast<chrono::duration<double, ratio<1, 1000>>>(end - start).count();
 }
 
-vector<vector<int>> *input(istream &in)
+vector<vector<size_t>> *input(istream &in)
 {
-   if (in)
+   if (!in) return nullptr;
+   int n, m;
+   in >> n >> m;
+   vector<vector<size_t>> *graph = new vector<vector<size_t>>(n);
+   for (int i = 0; i < m; ++i)
    {
-      int n, m;
-      in >> n >> m;
-      vector<vector<int>> *graph = new vector<vector<int>>(n);
-      for (int i = 0; i < m; ++i)
-      {
-         int a, b;
-         in >> a >> b;
-         graph->at(a).push_back(b);
-         graph->at(b).push_back(a);
-      }
-      return graph;
+      int a, b;
+      in >> a >> b;
+      graph->at(a).push_back(b);
+      graph->at(b).push_back(a);
    }
-   return nullptr;
+   return graph;
 }
 
-void output(ostream &output, vector<vector<int>> &graph)
+void output(ostream &output, vector<vector<size_t>> &graph)
 {
    const auto n = graph.size();
    size_t m = 0;
 
    for (const auto &i : graph)
       m += i.size();
-   m /= 2;
-   output << n << " " << m << endl;
+   output << n << " " << (m /= 2) << endl;
 
    set<size_t> marked;
    for (size_t i = 0; i < n; ++i)
@@ -102,72 +130,55 @@ void output(ostream &output, vector<vector<int>> &graph)
    }
 }
 
-vector<vector<int>> *get_full_graph(const int size)
+void add_edge(vector<vector<size_t>> &graph)
 {
-   vector<int> v(size);
-   for(int i = 0; i < size; ++i) v[i] = i;
-   auto *graphs = new vector<vector<int>>(size, v);
-   return graphs;
-}
-
-void move_an_edge(vector<vector<int>> &from, vector<vector<int>> &to)
-{
-   size_t from_vertex = rand() % from.size();
-   for(size_t i = 0; from[from_vertex].empty(); ++i)
+   size_t from = rand() % graph.size();
+   for (size_t i = 0; graph[from].size() == graph.size() - 1; ++i)
    {
-      if(i > from.size())
+      if (i >= graph.size())
          return;
-      ++from_vertex;
-      from_vertex %= from.size();
+      ++from;
+      from %= graph.size();
    }
-   auto &fr = from[from_vertex];
-   const size_t to_vertex = rand() % fr.size();
 
-   if(to.size() > from_vertex)
-      to[from_vertex].push_back(fr[to_vertex]);
-   fr.erase(fr.begin() + to_vertex);
+   vector<bool> gray(graph.size(), false);
 
-   auto t = from[to_vertex];
-   const auto it = find(t.begin(), t.end(), from_vertex);
-   if(it != t.end())
-      t.erase(it);
+   gray[from] = true;
+   for (auto v : graph[from])
+      gray[v] = true;
+
+   size_t to = rand() % graph.size();
+   while (gray[to])
+   {
+      ++to;
+      to %= graph.size();
+   }
+
+   graph[from].push_back(to);
+   graph[to].push_back(from);
 }
 
-void theoretical_complexity(const int size, ostream &out)
+void add_vertex(vector<vector<size_t>> &graph) { graph.resize(graph.size() + 1); }
+
+void complexity(vector<vector<size_t>> &graph, size_t from, size_t to, ostream &out)
 {
-   srand(static_cast<unsigned>(time(nullptr) / 2));
+   size_t m = 0;
+   for (auto &i : graph)
+      m += i.size();
+   m /= 2;
 
-   vector<vector<int>> full_graph = *get_full_graph(size);
-   vector<vector<int>> gr(size);
-
-   const int c_edge = size * (size - 1) / 2;
-   for (int i = 0; i < c_edge; ++i)
-   {
-      move_an_edge(full_graph, gr);
-
-      if ((i + 1) % (c_edge / 101)) continue;
-      int from = rand() % size;
-      const auto time = execute([&from, &gr, &size]() { has_path_bfs(gr, from, size); });
-      out << i + 1 << ";" << time << endl;
-   }
+   const auto time = execute([&graph, &from, &to]() { has_path_dfs(graph, from, to); });
+   // out << graph.size() << " " << m << " " << time << " " << from << " " << to << endl;
 }
 
-void actual_complexity(const int size, ostream &out)
+void complexity(vector<vector<size_t>> &graph, size_t c_repeat, const function<void(vector<vector<size_t>> &)> &preaction,
+   const function<bool(size_t, size_t)> &predicate, const function<size_t()> &get_from,
+   const function<size_t()> &get_to, ostream &out)
 {
-   srand(static_cast<unsigned>(time(nullptr) / 2));
-
-   vector<vector<int>> full_graph = *get_full_graph(size);
-   vector<vector<int>> gr(size);
-
-   const int c_edge = size * (size - 1) / 2;
-   const int freq = c_edge / 101;
-   for (int i = 0; i < c_edge; ++i)
+   for (size_t i = 0; i < c_repeat; ++i)
    {
-      move_an_edge(full_graph, gr);
-
-      if ((i + 1) % freq) continue;
-      int from = rand() % size, to = rand() % size;
-      const auto time = execute([&gr, &from, &to]() { has_path_bfs(gr, from, to); });
-      out << i + 1 << ";" << time << endl;
+      preaction(graph);
+      if (predicate(graph.size(), i))
+         complexity(graph, get_from(), get_to(), out);
    }
 }
