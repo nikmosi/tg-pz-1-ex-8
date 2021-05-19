@@ -30,8 +30,8 @@ int main(int argc, char *argv[])
 bool has_path_dfs(const std::vector<std::vector<int>> &graph, const int from, const int to)
 {
    if(from == to) return true;
-   std::set<int> marked;
-   marked.insert(from);
+   bool marked[graph.size()];
+   marked[from] = true;
    std::stack<int> p;
    p.push(from);
 
@@ -42,8 +42,8 @@ bool has_path_dfs(const std::vector<std::vector<int>> &graph, const int from, co
       for(int j : graph[t])
       {
          if(j == to) return true;
-         if(marked.count(j) != 0) continue;
-         marked.insert(j);
+         if(marked[j]) continue;
+         marked[j] = true;
          p.push(j);
       }
    }

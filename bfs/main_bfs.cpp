@@ -33,8 +33,8 @@ bool has_path_bfs(const std::vector<std::vector<int>> &graph, const int from, co
    if(from == to) return true;
    std::queue<int> q;
    q.push(from);
-   std::set<int> gray;
-   gray.insert(from);
+   bool gray[graph.size()];
+   gray[from] = true;
    while(!q.empty())
    {
       const int v = q.front();
@@ -42,9 +42,9 @@ bool has_path_bfs(const std::vector<std::vector<int>> &graph, const int from, co
       for(int j : graph[v])
       {
          if(j == to) return true;
-         if(gray.count(j) != 0) continue;
+         if(gray[j]) continue;
          q.push(j);
-         gray.insert(j);
+         gray[j] = true;
       }
    }
 
@@ -131,7 +131,7 @@ void move_an_edge(std::vector<std::vector<int>> &from, std::vector<std::vector<i
       t.erase(it);
 }
 
-void theoretical_complexity(const int size)
+void theoretical_complexity(const int size, std::ostream &out)
 {
    std::srand(static_cast<unsigned>(time(nullptr) / 2));
 
@@ -143,13 +143,13 @@ void theoretical_complexity(const int size)
    {
       move_an_edge(full_graph, gr);
 
-      if ((i + 1) % 100) continue;
+      if ((i + 1) % (c_edge / 101)) continue;
       const auto time = execute([&gr, &size]() { has_path_bfs(gr, 1, size); });
-      printf_s("%d;%lf;\n", i + 1, time);
+      out << i + 1 << ";" << time << std::endl;
    }
 }
 
-void actual_complexity(const int size)
+void actual_complexity(const int size, std::ostream &out)
 {
    std::srand(static_cast<unsigned>(time(nullptr) / 2));
 
@@ -161,9 +161,9 @@ void actual_complexity(const int size)
    {
       move_an_edge(full_graph, gr);
 
-      if ((i + 1) % 100) continue;
+      if ((i + 1) % (c_edge / 101)) continue;
       int from = rand() % size, to = rand() % size;
       const auto time = execute([&gr, &from, &to]() { has_path_bfs(gr, from, to); });
-      printf_s("%d;%lf;\n", i + 1, time);
+      out << i + 1 << ";" << time << std::endl;
    }
 }
