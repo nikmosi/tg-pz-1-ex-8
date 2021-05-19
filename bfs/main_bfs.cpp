@@ -6,17 +6,19 @@
 #include <ratio>
 #include <set>
 
-bool has_path_bfs(const std::vector<std::vector<int>> &graph, int from, int to);
+using namespace std;
 
-double execute(const std::function<void()> &func);
+bool has_path_bfs(const vector<vector<int>> &graph, int from, int to);
 
-std::vector<std::vector<int>> *input(std::istream &input);
+double execute(const function<void()> &func);
 
-void output(std::ostream &output, std::vector<std::vector<int>> &graph);
+vector<vector<int>> *input(istream &in);
 
-std::vector<std::vector<int>> *get_full_graph(const int size);
+void output(ostream &output, vector<vector<int>> &graph);
 
-void move_an_edge(std::vector<std::vector<int>> &from, std::vector<std::vector<int>> &to);
+vector<vector<int>> *get_full_graph(const int size);
+
+void move_an_edge(vector<vector<int>> &from, vector<vector<int>> &to);
 
 void theoretical_complexity(int size);
 void actual_complexity(int size);
@@ -28,10 +30,10 @@ int main(int argc, char *argv[])
    return 0;
 }
 
-bool has_path_bfs(const std::vector<std::vector<int>> &graph, const int from, const int to)
+bool has_path_bfs(const vector<vector<int>> &graph, const int from, const int to)
 {
    if(from == to) return true;
-   std::queue<int> q;
+   queue<int> q;
    q.push(from);
    bool gray[graph.size()];
    gray[from] = true;
@@ -51,25 +53,25 @@ bool has_path_bfs(const std::vector<std::vector<int>> &graph, const int from, co
    return false;
 }
 
-double execute(const std::function<void()> &func)
+double execute(const function<void()> &func)
 {
-   const auto start = std::chrono::high_resolution_clock::now();
+   const auto start = chrono::high_resolution_clock::now();
    func();
-   const auto end = std::chrono::high_resolution_clock::now();
-   return std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1, 1000>>>(end - start).count();
+   const auto end = chrono::high_resolution_clock::now();
+   return chrono::duration_cast<chrono::duration<double, ratio<1, 1000>>>(end - start).count();
 }
 
-std::vector<std::vector<int>> *input(std::istream &input)
+vector<vector<int>> *input(istream &in)
 {
-   if (input)
+   if (in)
    {
       int n, m;
-      input >> n >> m;
-      std::vector<std::vector<int>> *graph = new std::vector<std::vector<int>>(n);
+      in >> n >> m;
+      vector<vector<int>> *graph = new vector<vector<int>>(n);
       for (int i = 0; i < m; ++i)
       {
          int a, b;
-         input >> a >> b;
+         in >> a >> b;
          graph->at(a).push_back(b);
          graph->at(b).push_back(a);
       }
@@ -78,7 +80,7 @@ std::vector<std::vector<int>> *input(std::istream &input)
    return nullptr;
 }
 
-void output(std::ostream &output, std::vector<std::vector<int>> &graph)
+void output(ostream &output, vector<vector<int>> &graph)
 {
    const auto n = graph.size();
    auto m = 0;
@@ -86,9 +88,9 @@ void output(std::ostream &output, std::vector<std::vector<int>> &graph)
    for (const auto &i : graph)
       m += i.size();
    m /= 2;
-   output << n << " " << m << std::endl;
+   output << n << " " << m << endl;
 
-   std::set<int> marked;
+   set<int> marked;
    for (size_t i = 0; i < n; ++i)
    {
       marked.insert(i);
@@ -96,19 +98,19 @@ void output(std::ostream &output, std::vector<std::vector<int>> &graph)
       const auto s = e.size();
       for (size_t j = 0; j < s; ++j)
          if (marked.count(e.at(j)) == 0)
-            output << i << " " << e.at(j) << std::endl;
+            output << i << " " << e.at(j) << endl;
    }
 }
 
-std::vector<std::vector<int>> *get_full_graph(const int size)
+vector<vector<int>> *get_full_graph(const int size)
 {
-   std::vector<int> v(size);
+   vector<int> v(size);
    for(int i = 0; i < size; ++i) v[i] = i;
-   auto *graphs = new std::vector<std::vector<int>>(size, v);
+   auto *graphs = new vector<vector<int>>(size, v);
    return graphs;
 }
 
-void move_an_edge(std::vector<std::vector<int>> &from, std::vector<std::vector<int>> &to)
+void move_an_edge(vector<vector<int>> &from, vector<vector<int>> &to)
 {
    size_t from_vertex = rand() % from.size();
    for(size_t i = 0; from[from_vertex].empty(); ++i)
@@ -126,17 +128,17 @@ void move_an_edge(std::vector<std::vector<int>> &from, std::vector<std::vector<i
    fr.erase(fr.begin() + to_vertex);
 
    auto t = from[to_vertex];
-   const auto it = std::find(t.begin(), t.end(), from_vertex);
+   const auto it = find(t.begin(), t.end(), from_vertex);
    if(it != t.end())
       t.erase(it);
 }
 
-void theoretical_complexity(const int size, std::ostream &out)
+void theoretical_complexity(const int size, ostream &out)
 {
-   std::srand(static_cast<unsigned>(time(nullptr) / 2));
+   srand(static_cast<unsigned>(time(nullptr) / 2));
 
-   std::vector<std::vector<int>> full_graph = *get_full_graph(size);
-   std::vector<std::vector<int>> gr(size);
+   vector<vector<int>> full_graph = *get_full_graph(size);
+   vector<vector<int>> gr(size);
 
    const int c_edge = size * (size - 1) / 2;
    for (int i = 0; i < c_edge; ++i)
@@ -144,26 +146,28 @@ void theoretical_complexity(const int size, std::ostream &out)
       move_an_edge(full_graph, gr);
 
       if ((i + 1) % (c_edge / 101)) continue;
-      const auto time = execute([&gr, &size]() { has_path_bfs(gr, 1, size); });
-      out << i + 1 << ";" << time << std::endl;
+      int from = rand() % size;
+      const auto time = execute([&from, &gr, &size]() { has_path_bfs(gr, from, size); });
+      out << i + 1 << ";" << time << endl;
    }
 }
 
-void actual_complexity(const int size, std::ostream &out)
+void actual_complexity(const int size, ostream &out)
 {
-   std::srand(static_cast<unsigned>(time(nullptr) / 2));
+   srand(static_cast<unsigned>(time(nullptr) / 2));
 
-   std::vector<std::vector<int>> full_graph = *get_full_graph(size);
-   std::vector<std::vector<int>> gr(size);
+   vector<vector<int>> full_graph = *get_full_graph(size);
+   vector<vector<int>> gr(size);
 
    const int c_edge = size * (size - 1) / 2;
+   const int freq = c_edge / 101;
    for (int i = 0; i < c_edge; ++i)
    {
       move_an_edge(full_graph, gr);
 
-      if ((i + 1) % (c_edge / 101)) continue;
+      if ((i + 1) % freq) continue;
       int from = rand() % size, to = rand() % size;
       const auto time = execute([&gr, &from, &to]() { has_path_bfs(gr, from, to); });
-      out << i + 1 << ";" << time << std::endl;
+      out << i + 1 << ";" << time << endl;
    }
 }
